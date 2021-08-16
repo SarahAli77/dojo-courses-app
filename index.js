@@ -1,30 +1,34 @@
 const express = require("express");
-const { Pool, Client } = require("pg");
+const request = require("request");
+
 const app = express();
-const port = 3001;
+const port = 3000;
+const restApiUrl = process.env.API_URL;
 
-const pool = new Pool({
-  connectionString: process.env.CONNECTION_STRING,
-});
+app.get("/", function (req, res) {
+  request(
+    restApiUrl,
+    {
+      method: "GET",
+    },
+    function (err, resp, body) {
+      if (!err && resp.statusCode === 200) {
+        var objData = JSON.parse(body);
+        var c_cap = objData.data;
+        var responseString = `<table border="1"><tr><td>Course</td><td>Description</td></tr>`;
 
-app.get("/data", function (req, res) {
-  pool.query(
-    "SELECT course, description from dojo_courses",
-    [],
-    (err, result) => {
-      if (err) {
-        return res.status(405).jsonp({
-          error: err,
-        });
+        for (var i = 0; i < c_cap.length; i++)
+          responseString =
+            responseString +
+            `<tr><td>${c_cap[i].course}</td><td>${c_cap[i].description}</td></tr>`;
+
+        responseString = responseString + `</table>`;
+        res.send(responseString);
+      } else {
+        console.log(err);
       }
-
-      return res.status(200).jsonp({
-        data: result.rows,
-      });
     }
   );
 });
 
-app.listen(port, () =>
-  console.log(`Backend rest api listening on port ${port}!`)
-);
+app.listen(port, () => console.log(`Frontend app listening on port ${port}!`));
