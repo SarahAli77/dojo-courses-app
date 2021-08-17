@@ -35,9 +35,11 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       - name: build and push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v4
+        uses: mr-smithers-excellent/docker-build-push@v5
         with:
-         image: sarahali7/demo-app
-         registry: docker.io
-         username: ${{ secrets.DOCKER_USERNAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
+          image: sarahali7/demo-app
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+ 
