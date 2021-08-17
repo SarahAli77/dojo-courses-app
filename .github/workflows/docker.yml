@@ -16,7 +16,6 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build and Push Docker Image
-      uses: docker push sarahali7/demo-app:latest
       with:
         image: sarahali7/demo-app
         registry: docker.io
